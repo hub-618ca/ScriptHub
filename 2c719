@@ -1,0 +1,78 @@
+-- السكربت النهائي بناءً على مسار الفحص الصحيح للعبة
+local Player = game:GetService("Players").LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- تحديد القائمة والمسار الذي ظهر في الخطأ
+local PetList = PlayerGui:FindFirstChild("PetList")
+
+if PetList then
+    print("تم العثور على قائمة الحيوانات بنجاح!")
+    
+    -- البحث في داخل القائمة عن كل الأزرار التي تحمل اسم Unequip وضغطها بالطريقة الصحيحة
+    for _, desc in pairs(PetList:GetDescendants()) do
+        if desc:IsA("TextButton") and desc.Name == "Unequip" then
+            
+            -- الطرق البديلة للضغط البرمجي لتفادي خطأ الـ Activate:
+            
+            -- الطريقة 1: محاكاة إشارة الضغط بالماوس (الأكثر توافقاً مع الجوال)
+            pcall(function()
+                for _, connection in pairs(getconnections(desc.MouseButton1Click)) do
+                    connection:Fire()
+                end
+                for _, connection in pairs(getconnections(desc.MouseButton1Down)) do
+                    connection:Fire()
+                end
+                for _, connection in pairs(getconnections(desc.Activated)) do
+                    connection:Fire()
+                end
+            end)
+            
+            -- الطريقة 2: محاكاة الضغط عبر سكريبتات الجوال (Delta) في حال لم تنجح الروابط
+            pcall(function()
+                local GuiService = game:GetService("GuiService")
+                local VirtualInputManager = game:GetService("VirtualInputManager")
+                
+                -- الحصول على الموقع الحقيقي للزر على الشاشة برمجياً
+                local pos = desc.AbsolutePosition
+                local size = desc.AbsoluteSize
+                local centerX = pos.X + (size.X / 2)
+                local centerY = pos.Y + (size.Y / 2) + 36 -- إضافة إزاحة شريط روبلوكس العلوي
+                
+                -- إرسال كبسة إصبع افتراضية في مكان الزر بدقة
+                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, game, 1)
+                task.wait(0.05)
+                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, game, 1)
+            end)
+            
+            print("تم تنفيذ أمر الضغط على زر Unequip")
+        end
+    end
+else
+    warn("تأكد من فتح قائمة الأرانب لتظهر في ملفات اللعبة أولاً.")
+end
+task.wait(0)
+
+-- السكريبت الأول
+task.spawn(function()
+    pcall(function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/6KAVZVyh"))()
+    end)
+end)
+
+task.wait(0)
+
+-- السكريبت الثاني
+task.spawn(function()
+    pcall(function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/afuGN5c2"))()
+    end)
+end)
+
+task.wait(0)
+
+-- السكريبت الثالث
+task.spawn(function()
+    pcall(function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/Zx75bXAL"))()
+    end)
+end)
